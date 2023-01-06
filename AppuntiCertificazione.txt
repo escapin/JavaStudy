@@ -1,0 +1,96 @@
+Java SE 11 Developer (1Z0-819)
+
+1. JAVA concurrency
+2. Database Applications with JDBC
+3. JAVA modules
+
+
+a. java.util.Collection API: "NavigableSet extends SortedSet"
+b. Type erasure and reification
+
+/* effectively final (JAVA 8)ùù
+
+UNA CLASSE DENTRO UN METODO --> possibile!
+
+
+1. java.util.NavigableSet extends java.util.SortedSet with methods:
+			lower,		-->		less than
+			floor,		-->		less than or equal
+			ceiling,	-->		greater than or equal
+			higher,   	--> 	greater than 
+														a given element
+														
+2. Java Label ("MyLabel:" to mark the statement that follows)
+
+3. chartAt( ): può prendere un char come argomento. In caso l'indice sia fuori dal range della grandezza della stringa è dichiarato tornare 'IndexOutOfBoundsException' invece ritorna la sua specializzazione 'StringIndexOutOfBoundsException'
+
+4. "default" keyword in Functional Interfaces
+
+5. Member variables of the outer instance can always be referred to using only the variable name within the inner instance, UNLESS a variable is not shadowed by another variable in inner class.
+
+6. Java 8 onwards, an interface is allowed to have default and static methods, which are non-abstract methods. Java 9 onwards, an interface is also allowed to have private methods.
+
+7. Studiare i short e i byte (e i loro 'cast') --> Implicit narrowing occurs only for byte, char, short, and int.
+
+8. Compared to public, protected, and private accessibilities, default accessibility is more restrictive than protected, but less restrictive than private.
+
+Members with "default" accessibility are only accessible within the class itself and from other classes in the same package. While "protected" members are, in addition, accessible from subclasses in any other package as well. (Members with "private" accessibility are only accessible within the class itself.)
+
+
+9. MODIFIERS: 
+-- You CANNOT apply any modifier except "final" to a LOCAL VARIABLE, i.e., you cannot make them transient, volatile, static, public, and private.
+-- But you can apply access modifiers (public, private and protected) and final, transient, volatile, and static to INSTANCE VARIABLES.
+-- You CANNOT apply "native" and "synchronized" to any kind of variable.
+
+
+10. Concept of TYPE ERASURE:
+	Type erasure means that a compiled java class does not contain any of the generic information that is present in the java file. In other words, the compiler removes the generic information from a java class when it compile it into byte code. For example, List<String> list; and List list; are compiled to the same byte code. Therefore, at run time, it does not matter whether you've used generic classes or not and this allows both kinds of classes to interoperate because they are essentially the same class to the JVM.
+
+	Type erasure ensures that no new classes are created for parameterized types; consequently, generics incur no runtime overhead.
+
+11. Concept of REIFICATION:
+	This is just the opposite of type erasure. Here, all the type information is preserved in the byte code. In Java, arrays are reified. For example,
+        ArrayList[] alArray = new ArrayList[1];
+        Collection[] cArray = alArray;
+        cArray[0] = new HashSet();
+	The above code will compile fine. But it will throw an java.lang.ArrayStoreException at run time because the byte code contains the information that cArray actually points to an array of ArrayLists and not of HashSets.
+	
+12. IntFunction --> specialization of Function<Integer>
+
+	Using the regular functional interfaces by parameterizing them to Integer is inefficient as compared to using specially designed interfaces for primitives because they avoid the cost of boxing and unboxing the primitives.
+	Now, since the problem statement requires something to be returned after processing each int, you need to use a Function instead of a Consumer or a Predicate.
+	
+13. JDBC: CallableStatement vs PreparedStatement
+	*	A [PreparedStatement] is used for SQL statements that are executed multiple times with different values. For example, if you want to insert several values into a table, one after another, it is a lot easier with PreparedStatement:
+			
+			//a PreparedStatement is created only once here
+			ps = c.prepareStatement("INSERT INTO STUDENT VALUES (?, ?)");
+			//Once created, the PreparedStatement is compiled automatically.
+
+			ps.setInt(1, 111);
+			ps.setString(2, "Bob");
+			ps.executeUpdate();
+
+			//Now change the parameter values and execute again.
+			ps.setInt(1, 112);
+			ps.setString(2, "Cathy");
+			ps.executeUpdate();
+		
+	*	A [CallableStatement] is meant for executing a stored procedure, which has already been created in the database. For example:
+			
+			//computeMatrixForSales is a stored procedure that has already been
+			//created in the database.
+			callableStatement = connection.prepareCall("{call computeMatrixForSales(?)});
+			callableStatement.setInt(1, 1000);
+			callableStatement.executeUpdate();
+
+14. ~KeyEvent.SHIFT_MASK  --> unary bitwise operator: inverts ones and zeroes in a number
+
+15. Integral types means byte, short, int, long, and char
+
+16. static char ch; System.out.print(ch);
+
+For char, the print/println methods translate the character into one or more bytes according to the platform's default character encoding. That is why while printing a char value of 0, a blank space is printed instead of 0 (even though the char's integral value is 0).
+
+
+17. Static method in interfaces should have a body;
